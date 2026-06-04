@@ -6,6 +6,9 @@ enum healthStatus {
 	DEAD,
 };
 
+void printHealthy();
+void printStats();
+void printMenu();
 
 class Plant {
 private:
@@ -41,6 +44,10 @@ public:
 	int getCurrentHumidity() {
 		return currentHumidity;
 	}
+
+	healthStatus getHealthStatus() {
+		return health;
+	}
 };
 
 
@@ -73,25 +80,99 @@ public:
 			amount++;
 		}
 	}
+	void printPlant(int index) {
+		if (plants[index].getHealthStatus() == HEALTHY) {
+			printHealthy();
+		}
+	}
 };
 
 
-void printPlant();
-void printStats();
-void printMenu();
+
 
 
 
 int main() {
 	srand(time(NULL));
 	GreenHouseController greenHouse = GreenHouseController();
+	greenHouse.addPlant();
+	greenHouse.printPlant(0);
+
+;}
 
 
+void printHealthy() {
+	std::cout << R"(
+        , .-.-,_,
+        )`-.>'` (
+       /     `\  |
+
+       |       | |
+        \     / /
+        `=(\ /.=`
+         `-;`.-' 
+           `)|     ,
+            ||  .-'|
+          ,_||  \_,/
+    ,      \|| .'
+    |\|\  , ||/
+   ,_\` |/| |Y_,
+    '-.'-._\||/
+       >_.-`Y|
+       ` .-"||"-.
+         \'----'/
+          |~~~~|
+          |:.  |
+         /::::  \
+       .:::'     '.
+      /:::         \
+     ;:::'          ;
+     |:::           |
+     |:::           |
+     |:::           |
+     ;:::           ;
+     \:::.          /
+      ':::..      .'
+       `""-----""`
+    =====[HEALTHY]=====
+)" << std::endl;
 }
 
 
-void printPlant() {
-
+void printDry() {
+	std::cout << R"(
+            , .-.-,_,
+            )`-.>'` (
+           /     `\  |
+           |       | |
+            \     / /
+            `=(\ /.=`
+            `-;`.-' 
+           `  //     
+             //  
+          ,_// 
+           \||
+            ||
+   ,_\`     ||
+    '-.'-._\||/
+       >_.-`Y|
+       ` .-"||"-.
+         \'----'/
+          |~~~~|
+          |:.  |
+         /::::  \
+       .:::'     '.
+      /:::         \
+     ;:::'          ;
+     |:::           |
+     |:::           |
+     |:::           |
+     ;:::           ;
+     \:::.          /
+      ':::..      .'
+       `""-----""`
+      =====[DRY]=====
+)" << std::endl;
 }
 
 
