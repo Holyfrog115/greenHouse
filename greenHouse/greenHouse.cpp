@@ -43,10 +43,15 @@ public:
 };
 
 
-class greenHouseController {
+class GreenHouseController {
 private:
 	Plant plants[10];
+	int amount;
 public:
+	GreenHouseController() {
+		amount = 0;
+	}
+
 	void checkAllPlants() {
 		for (Plant plant : plants) {
 			if (plant.getCurrentHumidity() < 50) {
