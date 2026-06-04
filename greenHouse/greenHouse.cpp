@@ -13,7 +13,12 @@ private:
 	int currentHumidity;
 	healthStatus health;
 public:
-	Plant(std::string plantName = "Sunflower", int currentHumidity = 100, healthStatus health = HEALTHY) {
+	Plant() {
+		plantName = "";
+		currentHumidity = 0;
+		health = DEAD;
+	}
+	Plant(std::string plantName, int currentHumidity, healthStatus health) {
 		this->plantName = plantName;
 		this->currentHumidity = currentHumidity;
 		this->health = health;
@@ -58,6 +63,16 @@ public:
 				int waterAmount = rand() % 10 + 5;
 				plant.updateCurrentHumidity(waterAmount);
 			}
+		}
+	}
+
+	void addPlant(std::string plantName = "Sunflower", int currentHumidity = 100, healthStatus health = HEALTHY) {
+		if (amount == 10) {
+			std::cout << "Green house is full.\n";
+		}
+		else {
+			plants[amount] = Plant(plantName, currentHumidity, health);
+			amount++;
 		}
 	}
 };
