@@ -76,8 +76,30 @@ public:
 };
 
 
+void printPlant();
+void printStats();
+void printMenu();
+
+
+
 int main() {
 	srand(time(NULL));
 	GreenHouseController greenHouse = GreenHouseController();
+
+
+}
+
+
+void printPlant() {
+
+}
+
+
+void printStats() {
+
+}
+
+
+void printMenu() {
 
 }
