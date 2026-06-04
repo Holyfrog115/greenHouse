@@ -14,7 +14,7 @@ private:
 	healthStatus health;
 public:
 	Plant() {
-		plantName = "";
+		plantName = "-";
 		currentHumidity = 0;
 		health = DEAD;
 	}
@@ -24,12 +24,12 @@ public:
 		this->health = health;
 	}
 
-	void water() {
-		if (currentHumidity + 20 > 100) {
+	void water(int amount) {
+		if (currentHumidity + amount > 100) {
 			currentHumidity = 100;
 		}
 		else {
-			currentHumidity += 20;
+			currentHumidity += amount;
 		}
 	}
 
@@ -40,10 +40,6 @@ public:
 
 	int getCurrentHumidity() {
 		return currentHumidity;
-	}
-
-	void updateCurrentHumidity(int humidity) {
-		currentHumidity += humidity;
 	}
 };
 
@@ -60,10 +56,10 @@ public:
 	}
 
 	void checkAllPlants() {
-		for (Plant plant : plants) {
+		for (Plant &plant : plants) {
 			if (plant.getCurrentHumidity() < 50) {
 				int waterAmount = rand() % 10 + 5;
-				plant.updateCurrentHumidity(waterAmount);
+				plant.water(waterAmount);
 			}
 		}
 	}
@@ -81,5 +77,7 @@ public:
 
 
 int main() {
+	srand(time(NULL));
+	GreenHouseController greenHouse = GreenHouseController();
 
 }
