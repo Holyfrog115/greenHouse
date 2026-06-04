@@ -32,6 +32,14 @@ public:
 		int decrease = rand() % 25 + 5;
 		currentHumidity -= decrease;
 	}
+
+	int getCurrentHumidity() {
+		return currentHumidity;
+	}
+
+	void updateCurrentHumidity(int humidity) {
+		currentHumidity += humidity;
+	}
 };
 
 
@@ -41,7 +49,10 @@ private:
 public:
 	void checkAllPlants() {
 		for (Plant plant : plants) {
-
+			if (plant.getCurrentHumidity() < 50) {
+				int waterAmount = rand() % 10 + 5;
+				plant.updateCurrentHumidity(waterAmount);
+			}
 		}
 	}
 };
