@@ -52,9 +52,11 @@ class GreenHouseController {
 private:
 	Plant plants[10];
 	int amount;
+	int days;
 public:
 	GreenHouseController() {
 		amount = 0;
+		days = 0;
 	}
 
 	void checkAllPlants() {
