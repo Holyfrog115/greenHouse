@@ -41,6 +41,16 @@ public:
 	void updateStatus() {
 		int decrease = rand() % 25 + 5;
 		currentHumidity -= decrease;
+
+        if (currentHumidity < 20) {
+            health = DEAD;
+        }
+        else if (currentHumidity < 60) {
+            health = DRY;
+        }
+        else {
+            health = HEALTHY;
+        }
 	}
 
 	int getCurrentHumidity() {
@@ -112,10 +122,7 @@ public:
 int main() {
 	srand(time(NULL));
 	GreenHouseController greenHouse = GreenHouseController();
-	greenHouse.addPlant();
-	greenHouse.printPlant(0);
-    greenHouse.
-;}
+}
 
 
 void printHealthy() {
