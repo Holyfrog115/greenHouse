@@ -458,13 +458,17 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         }
         else if (choice == 4) {
             // Water current plant
-            if (water > 0 && greenHouse.get) {
-                greenHouse.waterPlant(20);
-                water--;
-            }
-            else {
+            if (water == 0) {
                 std::cout << "Not enough water.\n";
                 waitEnterKey();
+            }
+            else if (greenHouse.getCurrentHealthState() == DEAD) {
+                std::cout << "You can't water dead plants to increase humidity.\n";
+                waitEnterKey();
+            }
+            else {
+                greenHouse.waterPlant(20);
+                water--;
             }
         }
         else if (choice == 5) {
