@@ -105,12 +105,14 @@ public:
 
     void updateStatus() {
         for (Plant& plant : plants) {
-            plant.updateWaterStatus();
-            if (isControlerEnabled && plant.getHealthStatus() != DEAD) {
-                int waterAmount = rand() % 10 + 5;
-                plant.water(waterAmount);
+            if (plant.getHealthStatus() != DEAD) {
+                plant.updateWaterStatus();
+                if (isControlerEnabled) {
+                    int waterAmount = rand() % 10 + 5;
+                    plant.water(waterAmount);
+                }
+                plant.updateHealthStatus();
             }
-            plant.updateHealthStatus();
         }
     }
 
@@ -157,7 +159,7 @@ public:
 void printStats(GreenHouseController greenHouse, int water, int seeds);
 int getWater();
 int getSeeds();
-void printMenu();
+void printMenu(GreenHouseController greenHouse, int water, int seeds);
 int getMenuChoice();
 void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds);
 void printHealthy();
@@ -185,6 +187,7 @@ int main() {
 	GreenHouseController greenHouse = GreenHouseController();
     int water = 0;
     int seeds = 0;
+    greenHouse.addPlant();
 
     mainMenu(greenHouse, water, seeds);
 
@@ -305,12 +308,12 @@ void printDead() {
 
 
 void printStats(GreenHouseController greenHouse, int water, int seeds) {
-    int humidity = greenHouse.getCurrentHumidity();
     bool isControlerEnabled = greenHouse.getControlerState();
-    std::cout << "Current humidity: " << humidity << '\n';
+    std::cout << "======== S T A T S ========\n";
     std::cout << "Available water: " << water << '\n';
     std::cout << "Available seeds: " << seeds << '\n';
-    std::cout << "Green house control: " << (isControlerEnabled ? "ON" : "OFF") << "\n\n";
+    std::cout << "Green house control: " << (isControlerEnabled ? "ON" : "OFF") << "\n";
+    std::cout << "===========================\n\n";
 }
 
 
@@ -324,15 +327,16 @@ int getSeeds() {
 }
 
 
-void printMenu() {
-    std::cout << "----------------------------------------------\n";
+void printMenu(GreenHouseController greenHouse, int water, int seeds) {
+    printStats(greenHouse, water, seeds);
+    std::cout << "==============================================\n";
     std::cout << "1. See plant\n";
     std::cout << "2. Start next day\n";
     std::cout << "3. Plant/Change a plant\n";
     std::cout << "4. Water a plant\n";
     std::cout << "5. Turn on/off green house controler\n";
     std::cout << "6. Exit\n";
-    std::cout << "----------------------------------------------\n";
+    std::cout << "==============================================\n";
 }
 
 
@@ -347,7 +351,7 @@ int getMenuChoice() {
             std::cout << "Error. Please enter a valid number.\n";
             continue;
         }
-    } while (choice < 1 || choice > 5);
+    } while (choice < 1 || choice > 6);
 
     return choice;
 }
@@ -357,8 +361,8 @@ void waitEnterKey() {
     // stops program until enter is pressed
 
     std::cout << "Press enter to continue..." << std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cin.get();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 
@@ -369,20 +373,27 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
 
     while (isRunning) {
         std::cout << "\033[2J\033[H" << std::flush;
-        printMenu();
+        printMenu(greenHouse, water, seeds);
 
         choice = getMenuChoice();
         if (choice == 1) {
+            // See plant
             std::cout << "\033[2J\033[H" << std::flush;
             greenHouse.printPlant();
-            printStats(greenHouse, water, seeds);
+            std::cout << "Current humidity: " << greenHouse.getCurrentHumidity() << "%\n\n";
             waitEnterKey();
         }
         else if (choice == 2) {
+            // Start next day
             greenHouse.updateStatus();
         }
         else if (choice == 3) {
+            // Plant/change a plant
             greenHouse.printGreenHouse();
+        }
+        else if (choice == 6) {
+            // Exit
+            isRunning = false;
         }
     }
 }
