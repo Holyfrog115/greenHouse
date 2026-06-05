@@ -40,7 +40,12 @@ public:
 
 	void updateWaterStatus() {
 		int decrease = rand() % 25 + 5;
-		currentHumidity -= decrease;
+        if (currentHumidity - decrease < 0) {
+            currentHumidity = 0;
+        }
+        else {
+            currentHumidity -= decrease;
+        }
 	}
 
 
@@ -105,21 +110,19 @@ public:
 
     void updateStatus() {
         for (Plant& plant : plants) {
-            if (plant.getHealthStatus() != DEAD) {
-                plant.updateWaterStatus();
-                if (isControlerEnabled) {
-                    int waterAmount = rand() % 10 + 5;
-                    plant.water(waterAmount);
-                }
-                plant.updateHealthStatus();
+            plant.updateWaterStatus();
+            if (isControlerEnabled && plant.getHealthStatus() != DEAD) {
+                int waterAmount = rand() % 10 + 5;
+                plant.water(waterAmount);
             }
+            plant.updateHealthStatus();
         }
     }
 
 
 	void addPlant(std::string plantName = "Sunflower", int currentHumidity = 100, healthStatus health = HEALTHY) {
 		if (amount == 10) {
-			std::cout << "Green house is full.\n";
+			std::cout << "Greenhouse is full.\n";
 		}
 		else {
 			plants[amount] = Plant(plantName, currentHumidity, health);
@@ -152,6 +155,16 @@ public:
             std::cout << i + 1 << "; ";
             plants[i].printStats();
         }
+    }
+
+
+    void updateDays() {
+        days++;
+    }
+
+
+    int getDays() {
+        return days;
     }
 };
 
@@ -310,9 +323,10 @@ void printDead() {
 void printStats(GreenHouseController greenHouse, int water, int seeds) {
     bool isControlerEnabled = greenHouse.getControlerState();
     std::cout << "======== S T A T S ========\n";
+    std::cout << "Day: " << greenHouse.getDays() << '\n';
     std::cout << "Available water: " << water << '\n';
     std::cout << "Available seeds: " << seeds << '\n';
-    std::cout << "Green house control: " << (isControlerEnabled ? "ON" : "OFF") << "\n";
+    std::cout << "Greenhouse control: " << (isControlerEnabled ? "ON" : "OFF") << "\n";
     std::cout << "===========================\n\n";
 }
 
@@ -329,7 +343,7 @@ int getSeeds() {
 
 void printMenu(GreenHouseController greenHouse, int water, int seeds) {
     printStats(greenHouse, water, seeds);
-    std::cout << "==============================================\n";
+    std::cout << "============= M A I N   M E N U ==============\n";
     std::cout << "1. See plant\n";
     std::cout << "2. Start next day\n";
     std::cout << "3. Plant/Change a plant\n";
@@ -386,10 +400,17 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         else if (choice == 2) {
             // Start next day
             greenHouse.updateStatus();
+            greenHouse.updateDays();
         }
         else if (choice == 3) {
             // Plant/change a plant
             greenHouse.printGreenHouse();
+        }
+        else if (choice == 4) {
+            // Water plant
+        }
+        else if (choice == 5) {
+            // Turn on/off greenhouse controller
         }
         else if (choice == 6) {
             // Exit
