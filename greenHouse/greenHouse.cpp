@@ -82,10 +82,17 @@ public:
 			amount++;
 		}
 	}
+
 	void printPlant(int index) {
 		if (plants[index].getHealthStatus() == HEALTHY) {
 			printHealthy();
 		}
+        else if (plants[index].getHealthStatus() == DRY) {
+            printDry();
+        }
+        else if (plants[index].getHealthStatus() == DEAD) {
+            printDead();
+        }
 	}
 };
 
@@ -99,7 +106,7 @@ int main() {
 	GreenHouseController greenHouse = GreenHouseController();
 	greenHouse.addPlant();
 	greenHouse.printPlant(0);
-
+    greenHouse.
 ;}
 
 
