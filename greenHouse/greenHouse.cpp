@@ -284,3 +284,20 @@ void printMenu() {
     std::cout << "5. Exit\n";
     std::cout << "----------------------------------------------\n";
 }
+
+
+int getMenuChoice() {
+    int choice = 0;
+    do {
+        std::cout << "Enter function number: ";
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Error. Please enter a valid number.\n";
+            continue;
+        }
+    } while (choice < 1 || choice > 5);
+
+    return choice;
+}
