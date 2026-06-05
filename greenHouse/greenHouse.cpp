@@ -9,7 +9,9 @@ enum healthStatus {
 void printHealthy();
 void printDry();
 void printDead();
-void printStats();
+void printStats(GreenHouseController greenHouse, int water, int seeds);
+int getWater();
+int getSeeds();
 void printMenu();
 
 class Plant {
