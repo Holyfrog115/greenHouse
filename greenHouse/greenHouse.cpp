@@ -25,11 +25,14 @@ public:
 		currentHumidity = 0;
 		health = DEAD;
 	}
+
+
 	Plant(std::string plantName, int currentHumidity, healthStatus health) {
 		this->plantName = plantName;
 		this->currentHumidity = currentHumidity;
 		this->health = health;
 	}
+
 
 	void water(int amount) {
 		if (currentHumidity + amount > 100) {
@@ -40,10 +43,14 @@ public:
 		}
 	}
 
-	void updateStatus() {
+
+	void updateWaterStatus() {
 		int decrease = rand() % 25 + 5;
 		currentHumidity -= decrease;
+	}
 
+
+    void updateHealthStatus() {
         if (currentHumidity < 20) {
             health = DEAD;
         }
@@ -53,11 +60,13 @@ public:
         else {
             health = HEALTHY;
         }
-	}
+    }
+
 
 	int getCurrentHumidity() {
 		return currentHumidity;
 	}
+
 
 	healthStatus getHealthStatus() {
 		return health;
@@ -80,19 +89,15 @@ public:
         isControlerEnabled = false;
 	}
 
-	void checkAllPlants() {
-		for (Plant &plant : plants) {
-			if (plant.getCurrentHumidity() < 50) {
-				int waterAmount = rand() % 10 + 5;
-				plant.water(waterAmount);
-			}
-		}
-	}
-
 
     void updateStatus() {
         for (Plant& plant : plants) {
-            plant.updateStatus();
+            plant.updateWaterStatus();
+            if (isControlerEnabled && plant.getHealthStatus() != DEAD) {
+                int waterAmount = rand() % 10 + 5;
+                plant.water(waterAmount);
+            }
+            plant.updateHealthStatus();
         }
     }
 
@@ -108,14 +113,14 @@ public:
 	}
 
 
-	void printPlant(int index) {
-		if (plants[index].getHealthStatus() == HEALTHY) {
+	void printPlant() {
+		if (plants[selectedPlant].getHealthStatus() == HEALTHY) {
 			printHealthy();
 		}
-        else if (plants[index].getHealthStatus() == DRY) {
+        else if (plants[selectedPlant].getHealthStatus() == DRY) {
             printDry();
         }
-        else if (plants[index].getHealthStatus() == DEAD) {
+        else if (plants[selectedPlant].getHealthStatus() == DEAD) {
             printDead();
         }
 	}
@@ -300,4 +305,23 @@ int getMenuChoice() {
     } while (choice < 1 || choice > 5);
 
     return choice;
+}
+
+
+void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
+    bool isRunning = true;
+    int choice = 0;
+
+    while (isRunning) {
+        std::cout << "\033[2J\033[H" << std::flush;
+        greenHouse.printPlant();
+        printStats(greenHouse, water, seeds);
+        printMenu();
+
+        choice = getMenuChoice();
+        if (choice == 1) {
+            greenHouse.updateStatus();
+        }
+
+    }
 }
