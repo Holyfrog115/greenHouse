@@ -68,10 +68,12 @@ private:
 	Plant plants[10];
 	int amount;
 	int days;
+    int selectedPlant;
 public:
 	GreenHouseController() {
 		amount = 0;
 		days = 0;
+        selectedPlant = 0;
 	}
 
 	void checkAllPlants() {
@@ -112,11 +114,11 @@ public:
             printDead();
         }
 	}
+
+    int getCurrentHumidity() {
+        return plants[selectedPlant].getCurrentHumidity();
+    }
 };
-
-
-
-
 
 
 int main() {
