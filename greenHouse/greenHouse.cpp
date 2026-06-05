@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <limits>
 
 enum healthStatus {
 	HEALTHY,
@@ -6,13 +7,6 @@ enum healthStatus {
 	DEAD,
 };
 
-void printHealthy();
-void printDry();
-void printDead();
-void printStats(GreenHouseController greenHouse, int water, int seeds);
-int getWater();
-int getSeeds();
-void printMenu();
 
 class Plant {
 private:
@@ -132,17 +126,7 @@ public:
 	}
 
 
-	void printPlant() {
-		if (plants[selectedPlant].getHealthStatus() == HEALTHY) {
-			printHealthy();
-		}
-        else if (plants[selectedPlant].getHealthStatus() == DRY) {
-            printDry();
-        }
-        else if (plants[selectedPlant].getHealthStatus() == DEAD) {
-            printDead();
-        }
-	}
+    void printPlant();
 
 
     int getCurrentHumidity() {
@@ -170,9 +154,40 @@ public:
 };
 
 
+void printStats(GreenHouseController greenHouse, int water, int seeds);
+int getWater();
+int getSeeds();
+void printMenu();
+int getMenuChoice();
+void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds);
+void printHealthy();
+void printDry();
+void printDead();
+
+
+void GreenHouseController::printPlant() {
+    if (plants[selectedPlant].getHealthStatus() == HEALTHY) {
+        printHealthy();
+    }
+    else if (plants[selectedPlant].getHealthStatus() == DRY) {
+        printDry();
+    }
+    else if (plants[selectedPlant].getHealthStatus() == DEAD) {
+        printDead();
+    }
+}
+
+
 int main() {
 	srand(time(NULL));
+
 	GreenHouseController greenHouse = GreenHouseController();
+    int water = 0;
+    int seeds = 0;
+
+    mainMenu(greenHouse, water, seeds);
+
+    return 0;
 }
 
 
@@ -291,10 +306,10 @@ void printDead() {
 void printStats(GreenHouseController greenHouse, int water, int seeds) {
     int humidity = greenHouse.getCurrentHumidity();
     bool isControlerEnabled = greenHouse.getControlerState();
-    std::cout << "Current humidity: " << humidity;
-    std::cout << "Available water: " << water;
-    std::cout << "Available seeds: " << seeds;
-    std::cout << "Green house control: " << isControlerEnabled ? "ON" : "OFF";
+    std::cout << "Current humidity: " << humidity << '\n';
+    std::cout << "Available water: " << water << '\n';
+    std::cout << "Available seeds: " << seeds << '\n';
+    std::cout << "Green house control: " << (isControlerEnabled ? "ON" : "OFF") << "\n\n";
 }
 
 
@@ -310,11 +325,12 @@ int getSeeds() {
 
 void printMenu() {
     std::cout << "----------------------------------------------\n";
-    std::cout << "1. Start next day\n";
-    std::cout << "2. Plant/Change a plant\n";
-    std::cout << "3. Water a plant\n";
-    std::cout << "4. Turn on/off green house controler\n";
-    std::cout << "5. Exit\n";
+    std::cout << "1. See plant\n";
+    std::cout << "2. Start next day\n";
+    std::cout << "3. Plant/Change a plant\n";
+    std::cout << "4. Water a plant\n";
+    std::cout << "5. Turn on/off green house controler\n";
+    std::cout << "6. Exit\n";
     std::cout << "----------------------------------------------\n";
 }
 
@@ -342,15 +358,18 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
 
     while (isRunning) {
         std::cout << "\033[2J\033[H" << std::flush;
-        greenHouse.printPlant();
-        printStats(greenHouse, water, seeds);
         printMenu();
 
         choice = getMenuChoice();
         if (choice == 1) {
-            greenHouse.updateStatus();
+            std::cout << "\033[2J\033[H" << std::flush;
+            greenHouse.printPlant();
+            printStats(greenHouse, water, seeds);
         }
         else if (choice == 2) {
+            greenHouse.updateStatus();
+        }
+        else if (choice == 3) {
             greenHouse.printGreenHouse();
         }
     }
