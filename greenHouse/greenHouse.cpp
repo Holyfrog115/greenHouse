@@ -5,6 +5,7 @@ enum healthStatus {
 	HEALTHY,
 	DRY,
 	DEAD,
+    UNKNOWN,
 };
 
 
@@ -17,7 +18,7 @@ public:
 	Plant() {
 		plantName = "-";
 		currentHumidity = 0;
-		health = DEAD;
+        health = UNKNOWN;
 	}
 
 
@@ -87,7 +88,7 @@ public:
 
 
     void printStats() {
-        std::cout << " - " << plantName << "; " << currentHumidity << "%; " << printHealthStatus() << std::endl;
+        std::cout << plantName << "; " << currentHumidity << "%; " << printHealthStatus() << std::endl;
     }
 };
 
@@ -111,23 +112,19 @@ public:
     void updateStatus() {
         for (Plant& plant : plants) {
             plant.updateWaterStatus();
-            if (isControlerEnabled && plant.getHealthStatus() != DEAD) {
+            if (isControlerEnabled && plant.getHealthStatus() != DEAD && plant.getHealthStatus() != UNKNOWN) {
                 int waterAmount = rand() % 10 + 5;
                 plant.water(waterAmount);
             }
-            plant.updateHealthStatus();
+            if (plant.getHealthStatus() != UNKNOWN) {
+                plant.updateHealthStatus();
+            }
         }
     }
 
 
 	void addPlant(std::string plantName = "Sunflower", int currentHumidity = 100, healthStatus health = HEALTHY) {
-		if (amount == 10) {
-			std::cout << "Greenhouse is full.\n";
-		}
-		else {
-			plants[amount] = Plant(plantName, currentHumidity, health);
-			amount++;
-		}
+		plants[selectedPlant] = Plant(plantName, currentHumidity, health);
 	}
 
 
@@ -151,10 +148,12 @@ public:
 
     void printGreenHouse() {
         std::cout << "N; Plant name; Current humidity; Health status\n";
+        std::cout << "===============================================\n";
         for (int i = 0; i < 10; i++) {
             std::cout << i + 1 << "; ";
             plants[i].printStats();
         }
+        std::cout << "===============================================\n";
     }
 
 
@@ -166,6 +165,9 @@ public:
     int getDays() {
         return days;
     }
+
+
+    void changePlant(int index, int& seeds);
 };
 
 
@@ -190,6 +192,21 @@ void GreenHouseController::printPlant() {
     }
     else if (plants[selectedPlant].getHealthStatus() == DEAD) {
         printDead();
+    }
+}
+
+void GreenHouseController::changePlant(int index, int& seeds) {
+    if ((plants[index].getHealthStatus() == DEAD || plants[index].getHealthStatus() == UNKNOWN) && seeds > 0) {
+        selectedPlant = index;
+        addPlant();
+        seeds--;
+    }
+    else if ((plants[index].getHealthStatus() == DEAD || plants[index].getHealthStatus() == UNKNOWN) && seeds == 0) {
+        std::cout << "Not enough seeds to plant a new plant.\n";
+        waitEnterKey();
+    }
+    else {
+        selectedPlant = index;
     }
 }
 
@@ -357,7 +374,7 @@ void printMenu(GreenHouseController greenHouse, int water, int seeds) {
 int getMenuChoice() {
     int choice = 0;
     do {
-        std::cout << "Enter function number: ";
+        std::cout << "Enter a function number: ";
         std::cin >> choice;
         if (std::cin.fail()) {
             std::cin.clear();
@@ -366,6 +383,23 @@ int getMenuChoice() {
             continue;
         }
     } while (choice < 1 || choice > 6);
+
+    return choice;
+}
+
+
+int getPlantPlaceNumber() {
+    int choice = 0;
+    do {
+        std::cout << "Enter a plant number: ";
+        std::cin >> choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Error. Please enter a valid number.\n";
+            continue;
+        }
+    } while (choice < 1 || choice > 10);
 
     return choice;
 }
@@ -401,13 +435,19 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
             // Start next day
             greenHouse.updateStatus();
             greenHouse.updateDays();
+            water = getWater();
+            seeds += getSeeds();
         }
         else if (choice == 3) {
             // Plant/change a plant
+            std::cout << "\033[2J\033[H" << std::flush;
             greenHouse.printGreenHouse();
+            int plant = getPlantPlaceNumber();
+            greenHouse.changePlant(plant - 1, seeds);
         }
         else if (choice == 4) {
             // Water plant
+            
         }
         else if (choice == 5) {
             // Turn on/off greenhouse controller
