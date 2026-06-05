@@ -7,6 +7,8 @@ enum healthStatus {
 };
 
 void printHealthy();
+void printDry();
+void printDead();
 void printStats();
 void printMenu();
 
@@ -172,6 +174,43 @@ void printDry() {
       ':::..      .'
        `""-----""`
       =====[DRY]=====
+)" << std::endl;
+}
+
+
+void printDead() {
+    std::cout << R"(
+ 
+ 
+      
+        
+       
+            
+            
+              
+           
+         
+            
+             
+            //
+    '-.'-._\||/
+       >_.-`Y|
+       ` .-"||"-.
+         \'----'/
+          |~~~~|
+          |:.  |
+         /::::  \
+       .:::'     '.
+      /:::         \
+     ;:::'          ;
+     |:::           |
+     |:::           |
+     |:::           |
+     ;:::           ;
+     \:::.          /
+      ':::..      .'
+       `""-----""`
+     =====[DEAD]=====
 )" << std::endl;
 }
 
