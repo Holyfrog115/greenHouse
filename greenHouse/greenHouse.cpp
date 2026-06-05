@@ -168,6 +168,11 @@ public:
 
 
     void changePlant(int index, int& seeds);
+
+
+    void waterPlant(int amount) {
+        plants[selectedPlant].water(amount);
+    }
 };
 
 
