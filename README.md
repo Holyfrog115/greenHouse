@@ -8,9 +8,9 @@ The program draws a potted plant in the console in 3 different types:
 3. Dead plant (the plant is dead and cannot be restored)
 
 After the drawing, it is suggested to choose one of the program options:
-1. Start the next day (reduces humidity by a random number)
-2. Plant/Change the plant 
-3. View the list of plants
+1. See plant (art of it's current health state and info on current humidity)
+2. Start the next day (reduces humidity by a random number)
+3. Plant/Change the plant 
 4. Water the plant (moisturizes by 20%)
 5. Enable/Turn off the greenhouse controller (humidifies all plants by 5-15%, random value)
 6. Exit
