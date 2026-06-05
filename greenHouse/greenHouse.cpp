@@ -247,6 +247,16 @@ void printStats(GreenHouseController greenHouse, int water, int seeds) {
 }
 
 
+int getWater() {
+    return rand() % 10 + 1;
+}
+
+
+int getSeeds() {
+    return rand() % 3;
+}
+
+
 void printMenu() {
 
 }
