@@ -163,6 +163,7 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds);
 void printHealthy();
 void printDry();
 void printDead();
+void waitEnterKey();
 
 
 void GreenHouseController::printPlant() {
@@ -352,7 +353,17 @@ int getMenuChoice() {
 }
 
 
+void waitEnterKey() {
+    // stops program until enter is pressed
+
+    std::cout << "Press enter to continue..." << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
+}
+
+
 void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
+    // Main menu logic
     bool isRunning = true;
     int choice = 0;
 
@@ -365,6 +376,7 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
             std::cout << "\033[2J\033[H" << std::flush;
             greenHouse.printPlant();
             printStats(greenHouse, water, seeds);
+            waitEnterKey();
         }
         else if (choice == 2) {
             greenHouse.updateStatus();
