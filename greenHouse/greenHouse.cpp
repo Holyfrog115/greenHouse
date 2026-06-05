@@ -113,7 +113,7 @@ public:
         for (Plant& plant : plants) {
             plant.updateWaterStatus();
             if (isControlerEnabled && plant.getHealthStatus() != DEAD && plant.getHealthStatus() != UNKNOWN) {
-                int waterAmount = rand() % 10 + 5;
+                int waterAmount = rand() % 15 + 5;
                 plant.water(waterAmount);
             }
             if (plant.getHealthStatus() != UNKNOWN) {
@@ -153,6 +153,7 @@ public:
             std::cout << i + 1 << "; ";
             plants[i].printStats();
         }
+        std::cout << "0; Back\n";
         std::cout << "===============================================\n";
     }
 
@@ -410,7 +411,7 @@ int getPlantPlaceNumber() {
             std::cout << "Error. Please enter a valid number.\n";
             continue;
         }
-    } while (choice < 1 || choice > 10);
+    } while (choice < 0 || choice > 10);
 
     return choice;
 }
@@ -454,7 +455,9 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
             std::cout << "\033[2J\033[H" << std::flush;
             greenHouse.printGreenHouse();
             int plant = getPlantPlaceNumber();
-            greenHouse.changePlant(plant - 1, seeds);
+            if (plant > 0) {
+                greenHouse.changePlant(plant - 1, seeds);
+            }
         }
         else if (choice == 4) {
             // Water current plant
@@ -473,6 +476,7 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         }
         else if (choice == 5) {
             // Turn on/off greenhouse controller
+            greenHouse.switchControler();
         }
         else if (choice == 6) {
             // Exit
