@@ -73,6 +73,14 @@ public:
 		}
 	}
 
+
+    void updateStatus() {
+        for (Plant& plant : plants) {
+            plant.updateStatus();
+        }
+    }
+
+
 	void addPlant(std::string plantName = "Sunflower", int currentHumidity = 100, healthStatus health = HEALTHY) {
 		if (amount == 10) {
 			std::cout << "Green house is full.\n";
