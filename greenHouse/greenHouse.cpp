@@ -172,6 +172,12 @@ public:
 
     void waterPlant(int amount) {
         plants[selectedPlant].water(amount);
+        plants[selectedPlant].updateHealthStatus();
+    }
+
+
+    healthStatus getCurrentHealthState() {
+        return plants[selectedPlant].getHealthStatus();
     }
 };
 
@@ -369,7 +375,7 @@ void printMenu(GreenHouseController greenHouse, int water, int seeds) {
     std::cout << "1. See plant\n";
     std::cout << "2. Start next day\n";
     std::cout << "3. Plant/Change a plant\n";
-    std::cout << "4. Water a plant\n";
+    std::cout << "4. Water current plant\n";
     std::cout << "5. Turn on/off green house controler\n";
     std::cout << "6. Exit\n";
     std::cout << "==============================================\n";
@@ -438,10 +444,10 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         }
         else if (choice == 2) {
             // Start next day
-            greenHouse.updateStatus();
-            greenHouse.updateDays();
             water = getWater();
             seeds += getSeeds();
+            greenHouse.updateStatus();
+            greenHouse.updateDays();
         }
         else if (choice == 3) {
             // Plant/change a plant
@@ -451,8 +457,15 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
             greenHouse.changePlant(plant - 1, seeds);
         }
         else if (choice == 4) {
-            // Water plant
-            
+            // Water current plant
+            if (water > 0 && greenHouse.get) {
+                greenHouse.waterPlant(20);
+                water--;
+            }
+            else {
+                std::cout << "Not enough water.\n";
+                waitEnterKey();
+            }
         }
         else if (choice == 5) {
             // Turn on/off greenhouse controller
