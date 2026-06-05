@@ -107,6 +107,7 @@ public:
 		}
 	}
 
+
 	void printPlant(int index) {
 		if (plants[index].getHealthStatus() == HEALTHY) {
 			printHealthy();
@@ -119,13 +120,16 @@ public:
         }
 	}
 
+
     int getCurrentHumidity() {
         return plants[selectedPlant].getCurrentHumidity();
     }
 
+
     void switchControler() {
         isControlerEnabled = !isControlerEnabled;
     }
+
 
     bool getControlerState() {
         return isControlerEnabled;
@@ -253,9 +257,11 @@ void printDead() {
 
 void printStats(GreenHouseController greenHouse, int water, int seeds) {
     int humidity = greenHouse.getCurrentHumidity();
+    bool isControlerEnabled = greenHouse.getControlerState();
     std::cout << "Current humidity: " << humidity;
     std::cout << "Available water: " << water;
     std::cout << "Available seeds: " << seeds;
+    std::cout << "Green house control: " << isControlerEnabled ? "ON" : "OFF";
 }
 
 
