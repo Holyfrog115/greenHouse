@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="greenHouse/greenHouse.vcxproj" />
+  <Project Path="greenHouse/greenHouse.vcxproj" Id="267c7fc1-5d3f-4542-8c7b-8299c6804ab3" />
 </Solution>
