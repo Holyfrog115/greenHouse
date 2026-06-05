@@ -71,11 +71,13 @@ private:
 	int amount;
 	int days;
     int selectedPlant;
+    bool isControlerEnabled;
 public:
 	GreenHouseController() {
 		amount = 0;
 		days = 0;
         selectedPlant = 0;
+        isControlerEnabled = false;
 	}
 
 	void checkAllPlants() {
@@ -119,6 +121,14 @@ public:
 
     int getCurrentHumidity() {
         return plants[selectedPlant].getCurrentHumidity();
+    }
+
+    void switchControler() {
+        isControlerEnabled = !isControlerEnabled;
+    }
+
+    bool getControlerState() {
+        return isControlerEnabled;
     }
 };
 
@@ -260,5 +270,11 @@ int getSeeds() {
 
 
 void printMenu() {
-
+    std::cout << "----------------------------------------------\n";
+    std::cout << "1. Start next day\n";
+    std::cout << "2. Plant/Change a plant\n";
+    std::cout << "3. Water a plant\n";
+    std::cout << "4. Turn on/off green house controler\n";
+    std::cout << "5. Exit\n";
+    std::cout << "----------------------------------------------\n";
 }
