@@ -27,7 +27,7 @@ public:
 	}
 
 
-	Plant(std::string plantName, int currentHumidity, healthStatus health) {
+	Plant(const std::string& plantName, int currentHumidity, healthStatus health) {
 		this->plantName = plantName;
 		this->currentHumidity = currentHumidity;
 		this->health = health;
@@ -71,6 +71,25 @@ public:
 	healthStatus getHealthStatus() {
 		return health;
 	}
+
+
+    std::string printHealthStatus() {
+        switch (health) {
+            case HEALTHY:
+                return "Healthy";
+            case DRY:
+                return "Dry";
+            case DEAD:
+                return "Dead";
+            default:
+                return "Unknown";
+        }
+    }
+
+
+    void printStats() {
+        std::cout << " - " << plantName << "; " << currentHumidity << "%; " << printHealthStatus() << std::endl;
+    }
 };
 
 
@@ -138,6 +157,15 @@ public:
 
     bool getControlerState() {
         return isControlerEnabled;
+    }
+
+
+    void printGreenHouse() {
+        std::cout << "N; Plant name; Current humidity; Health status\n";
+        for (int i = 0; i < 10; i++) {
+            std::cout << i + 1 << "; ";
+            plants[i].printStats();
+        }
     }
 };
 
@@ -322,6 +350,8 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         if (choice == 1) {
             greenHouse.updateStatus();
         }
-
+        else if (choice == 2) {
+            greenHouse.printGreenHouse();
+        }
     }
 }
