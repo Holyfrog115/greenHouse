@@ -180,6 +180,11 @@ public:
     healthStatus getCurrentHealthState() {
         return plants[selectedPlant].getHealthStatus();
     }
+
+
+    void turnOffController() {
+        isControlerEnabled = false;
+    }
 };
 
 
@@ -429,6 +434,7 @@ void waitEnterKey() {
 void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
     // Main menu logic
     bool isRunning = true;
+    bool wasSwitched = false;
     int choice = 0;
 
     while (isRunning) {
@@ -449,6 +455,8 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
             seeds += getSeeds();
             greenHouse.updateStatus();
             greenHouse.updateDays();
+            greenHouse.turnOffController();
+            wasSwitched = false;
         }
         else if (choice == 3) {
             // Plant/change a plant
@@ -476,7 +484,18 @@ void mainMenu(GreenHouseController& greenHouse, int& water, int& seeds) {
         }
         else if (choice == 5) {
             // Turn on/off greenhouse controller
-            greenHouse.switchControler();
+            if (wasSwitched) {
+                greenHouse.switchControler();
+            }
+            else if (water >= 4) {
+                greenHouse.switchControler();
+                wasSwitched = true;
+                water = ceil(water / 2);
+            }
+            else {
+                std::cout << "Not enough water.\n";
+                waitEnterKey();
+            }
         }
         else if (choice == 6) {
             // Exit
