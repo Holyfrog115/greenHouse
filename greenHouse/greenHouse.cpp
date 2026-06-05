@@ -239,8 +239,11 @@ void printDead() {
 }
 
 
-void printStats() {
-
+void printStats(GreenHouseController greenHouse, int water, int seeds) {
+    int humidity = greenHouse.getCurrentHumidity();
+    std::cout << "Current humidity: " << humidity;
+    std::cout << "Available water: " << water;
+    std::cout << "Available seeds: " << seeds;
 }
 
 
